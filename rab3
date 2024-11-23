@@ -1,14 +1,26 @@
 describe('example shop app', () => {
     beforeEach(() => {
       cy.visit('https://www.saucedemo.com/')
-      let userName = 'standard_user'
-      let userPass = 'secret_sauce'
+    })
+
+
+    it ('Авторизация на сайт',() =>{
+        let userName = 'standard_user'
+        let userPass = 'secret_sauce'
     
         cy.get('[data-test="username"]').type(`${userName}`)
         cy.get('[data-test="password"]').type(`${userPass}`)
         cy.get('[data-test="login-button"]').click()
-    })
-    it ('asc/desc',() =>{
+    }
+    it ('сортировка от дешового к дорогому',() =>{
+
+        //авторизация на сайт
+        let userName = 'standard_user'
+        let userPass = 'secret_sauce'
+    
+        cy.get('[data-test="username"]').type(`${userName}`)
+        cy.get('[data-test="password"]').type(`${userPass}`)
+        cy.get('[data-test="login-button"]').click()
 
         cy.get('[data-test="product-sort-container"]').select('Price (low to high)')
         const funklowtohigh = (index = 0, priceBefore = 0) => {
@@ -28,8 +40,19 @@ describe('example shop app', () => {
             });
           };
           funklowtohigh();
-        cy.get('[data-test="product-sort-container"]').select('Price (high to low)')
-        const funkhightolow = (index = 0, priceBefore = 10000) => {
+        }
+        it ('сортировка от дешового к дорогому',() =>{
+
+            //авторизация на сайт
+            let userName = 'standard_user'
+            let userPass = 'secret_sauce'
+    
+            cy.get('[data-test="username"]').type(`${userName}`)
+            cy.get('[data-test="password"]').type(`${userPass}`)
+            cy.get('[data-test="login-button"]').click()
+
+            cy.get('[data-test="product-sort-container"]').select('Price (high to low)')
+            const funkhightolow = (index = 0, priceBefore = 10000) => {
               cy.get('[class="inventory_item_price"]').then(($items) => {
                 if ($items.length > index) {
                   cy.wrap($items.eq(index)).then(($item) => {
@@ -45,9 +68,18 @@ describe('example shop app', () => {
                 }
               });
             };
-        funkhightolow();
+            funkhightolow();
+            }
     })
-    it ('AddBasket',() =>{
+    it ('Добовление в карзину и оформление заказа',() =>{
+
+        //авторизация на сайт
+        let userName = 'standard_user'
+        let userPass = 'secret_sauce'
+    
+        cy.get('[data-test="username"]').type(`${userName}`)
+        cy.get('[data-test="password"]').type(`${userPass}`)
+        cy.get('[data-test="login-button"]').click()
 
         let test = 'test'
         let code = '123'
