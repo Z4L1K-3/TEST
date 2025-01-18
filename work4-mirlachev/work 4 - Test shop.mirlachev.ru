@@ -1,3 +1,4 @@
+
 describe('test_risa', () => {
   beforeEach(() => {
     cy.visit('https://shop.mirlachev.ru//')
@@ -31,8 +32,9 @@ describe('test_risa', () => {
     cy.get('[data-hash="so__ycUygIPmSeajHZM"]').type(`${comment}`)
     cy.get('[data-hash="so__fBbIqQ1ceichwo3"]').click()
     cy.get('[data-hash="so__VYABxTT6UY1GRDo"]').click()
+    cy.get('[data-hash="so__uwpYoaQOjdFgyRJ"]').find('h1').should('have.text','СПАСИБО ЗА ЗАКАЗ!')
   })
-  it ('проверка котегории - столы',()=>{
+  it ('проверка котегории - диваны',()=>{
     cy.get('[src="/images/catalog/flTNfGcU97gVaLJrkrXW.svg"]').click()
     cy.get('[src="/images/catalog/zNO50ohKyk5RqyqcMWEG.svg"]').click()
     cy.get('[class="articleslist_item"]').find('a').should('have.attr', 'href').and('include', 'divan')
