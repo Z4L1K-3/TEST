@@ -1,0 +1,155 @@
+
+describe('test_risa', () = {
+  beforeEach(() = {
+    cy.visit('httpsshop.mirlachev.ru')
+    cy.viewport(1280,720)
+  })
+  it ('тест поисковой системы',()={
+
+    let test = 'стол'
+      cy.get('[class=search_but]').click({ multiple true })
+      cy.get('[name=search]').type(`${test}`)
+      cy.get('[data-class=searchbut]').click({ multiple true })
+      cy.get('[class=articleslist_item]').find('a').should('have.attr', 'href').and('include', 'stol')
+  })
+  it ('Проверка возможности заказа',()={
+
+    let name = 'ваня'
+    let phone = '9999999999'
+    let email = 'qwe@gmail.com'
+    let adress = 'Москва'
+    let comment = 'Тест'
+
+    cy.get('[href=catalogitem2491divan_italmas_1400]').click({ multiple true })
+    cy.get('[class=item-amount--plus]').click()
+    cy.get('[id=collection-buy]').click({ multiple true })
+    cy.get('[id=cart-amount]').should('have.text','2')
+    cy.get('[class=article_buy_but]').click()
+    cy.get('[data-hash=so__tA8pj2HIbopLUtc]').type(`${name}`)
+    cy.get('[data-hash=so__6s3CsiFTMpDKAaY]').type(`${phone}`)
+    cy.get('[data-hash=so__BWSXuJ8hUT1ajKd]').type(`${email}`)
+    cy.get('[data-hash=so__Fq1eLHZQQbtxfCh]').type(`${adress}`)
+    cy.get('[data-hash=so__ycUygIPmSeajHZM]').type(`${comment}`)
+    cy.get('[data-hash=so__fBbIqQ1ceichwo3]').click()
+    cy.get('[data-hash=so__VYABxTT6UY1GRDo]').click()
+    cy.get('[data-hash=so__uwpYoaQOjdFgyRJ]').find('h1').should('have.text','СПАСИБО ЗА ЗАКАЗ!')
+  })
+  it ('проверка котегории - диваны',()={
+    cy.get('[src=imagescatalogflTNfGcU97gVaLJrkrXW.svg]').click()
+    cy.get('[src=imagescatalogzNO50ohKyk5RqyqcMWEG.svg]').click()
+    cy.get('[class=articleslist_item]').find('a').should('have.attr', 'href').and('include', 'divan')
+  })
+  it ('проверка вкладки контакты',()={
+    cy.get('[href=contentcontacts]').click({ multiple true })
+    cy.get('[href=httpsmirlachev.rukontaktyi]').should('have.text','посмотреть для своего города')
+    cy.get('[href=tel+73412913016').should('have.text','(3412) 913-016')
+    cy.get('[href=tel+73412913034').should('have.text','(3412) 913-034')
+    cy.get('[data-hash=so__TorOiX2WDDL8Thu').find('a').should('have.attr', 'href').and('include', 'www.instagram.commirlachev')
+    cy.get('[data-hash=so__2AOR1DUUYZsOprL').find('a').should('have.attr', 'href').and('include', 'www.facebook.comfabrikamirlacheva')
+    cy.get('[data-hash=so__IfkSOyXCcxjh6GB').find('a').should('have.attr', 'href').and('include', 'httpsvk.commirlachev')
+  })
+  it('Проверка подвала(наличее текста и ссылок)',()={
+    cy.get('[data-hash=so__YNR5Ngeqv4cZlQg').should('have.text', 'nnФабрика МирлачеваnБольшой выбор диванов, кроватей и спальных гарнитуров, мебель для детской и аксессуары для дома.n ')
+    cy.get('[data-hash=so__80VtxDkO2fUyY24').find('a').should('have.attr', 'href').and('include', 'www.instagram.commirlachev')
+    cy.get('[data-hash=so__oHnf2f7SfszphHf').find('a').should('have.attr', 'href').and('include', 'www.facebook.comfabrikamirlacheva')
+    cy.get('[data-hash=so__Vyz3yLDYhZewOwg').find('a').should('have.attr', 'href').and('include', 'httpsvk.commirlachev')
+    cy.get('[class=smart-object--menu__item ').find('a').should('have.attr', 'href')
+  })
+  it('проверка возможности задать вопрос',()={
+
+    let name = 'ваня'
+    let phone = '9999999999'
+    let email = 'qwe@gmail.com'
+    let comment = 'Тест'
+
+    cy.get('[class=se__knopkabelayasseroyramkoy16]').click()
+    cy.get('[data-id=sc__RPPMmLE4k3M3UL5z]').should('be.visible')
+    cy.get('[placeholder=Ваше имя]').type(`${name}`)
+    cy.get('[placeholder=Ваше имя]').type(`${name}`)
+    cy.get('[data-hash=so__20IcRKn1d7Iv4Tt]').type(`${phone}`)
+    cy.get('[data-hash=so__9woGwAEVbUG64i6]').type(`${email}`)
+    cy.get('[data-hash=so__xXItQ3bMoezgr2O]').type(`${comment}`)
+    cy.get('[data-hash=so__loNwvTkrPCSK82v]').click()
+    cy.get('[data-hash=so__TYNOI6nNwO99N1T]').click()
+    cy.get('[class=fb-success__inner--accept]').should('be.visible')
+  })
+  it('Проверка цена на соответствие главной страницы и карточки товара', () = {
+    let sum1;
+    let sum2;
+  
+    cy.get('[class=articleslist_item]').eq(0).find('[class=se__kartochkatovaracena nowrap]')
+      .invoke('text')
+      .then((text) = {
+        sum1 = text.trim();
+        cy.log('Цена на главной странице ' + sum1);
+      })
+      .then(() = {
+        cy.get('[class=articleslist_item]').eq(0).click();
+      })
+      .then(() = {
+        cy.get('[id=collection-sum]').invoke('text').then((text) = {
+          sum2 = text.trim();
+          cy.log('Цена на карточке товара ' + sum2);
+  
+          if (sum1 === sum2) {
+            cy.log('Все ок');
+          } else {
+            throw new Error('Цена не совпадает с ожидаемой');
+          }
+        });
+      });
+  });
+  it('проверка модульной системы по созданию кухни', () = {
+    let sum1;
+    let sum2;
+    let sum3;
+    let sum;
+    let sam;
+  
+    cy.get('[href=catalogpart226enni]').click();
+  
+    cy.get('[class=component_list_item]').eq(0).find('[class=se__kartochkatovaracena nowrap]').invoke('text').then((text) = {
+      const cleanedText = text.replace(s+g, ''); 
+      sum1 = parseInt(cleanedText, 10);
+      cy.log('Цена первого элемента ' + sum1);
+    })
+    .then(() = {
+      cy.get('[class=component_list_item]').eq(0).find('[class=item-amount--plus]').click();
+    })
+    .then(() = {
+      cy.get('[class=component_list_item]').eq(1).find('[class=se__kartochkatovaracena nowrap]').invoke('text').then((text) = {
+        const cleanedText = text.replace(s+g, ''); 
+        sum2 = parseInt(cleanedText, 10);
+        cy.log('Цена второго элемента ' + sum2);
+      });
+    })
+    .then(() = {
+      cy.get('[class=component_list_item]').eq(1).find('[class=item-amount--plus]').click();
+    })
+    .then(() = {
+      cy.get('[class=component_list_item]').eq(2).find('[class=se__kartochkatovaracena nowrap]').invoke('text').then((text) = {
+        const cleanedText = text.replace(s+g, ''); 
+        sum3 = parseInt(cleanedText, 10);
+        cy.log('Цена третьего элемента ' + sum3);
+      });
+    })
+    .then(() = {
+      cy.get('[class=component_list_item]').eq(2).find('[class=item-amount--plus]').click();
+    })
+    .then(() = {
+      sum = sum1 + sum2 + sum3;
+  
+      cy.get('[id=collection-sum]').invoke('text').then((text) = {
+        const cleanedText = text.replace(s+g, ''); 
+        sam = parseInt(cleanedText, 10);
+        cy.log('Сумма из коллекции ' + sam);
+  
+        if (sum === sam) {
+          cy.log('Все ок');
+        } else {
+          throw new Error('Цена не совпадает с ожидаемой');
+        }
+      });
+    });
+  });
+})
